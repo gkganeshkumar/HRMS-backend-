@@ -1,0 +1,41 @@
+package com.example.Invoice_Hrms.model;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+
+@Document(collection = "invoices")
+@Data
+
+public class Invoice {
+
+    @Id
+
+    private String id;
+
+    private String invoiceNo;
+
+    private LocalDate invoiceDate;
+   private String invoiceTerms;
+    private LocalDate dueDate;
+
+    private String invoiceCompanyName;
+    private String invoiceCompanyAddress;
+    private String invoiceCountry;
+    private String invoicePinCode;
+    private String invoiceEmail;
+    private String invoiceMobileNo;
+    private String invoiceConsultantName;
+
+    private String companyName;
+    private String companyAddress;
+    private String companyMobileNo;
+    private String companyEmail;
+    @Transient
+    private List<Item> items;
+}

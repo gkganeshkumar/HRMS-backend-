@@ -1,0 +1,46 @@
+package com.example.Invoice_Hrms.controller;
+
+import com.example.Invoice_Hrms.dto.InvoiceDto;
+import com.example.Invoice_Hrms.model.Invoice;
+import com.example.Invoice_Hrms.service.InvoiceService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+@RestController
+@RequestMapping("/api/invoices")
+@RequiredArgsConstructor
+public class InvoiceController {
+
+
+    private final InvoiceService invoiceService;
+
+    @PostMapping
+    public ResponseEntity<Invoice> createInvoice(@RequestBody InvoiceDto data) {
+        return ResponseEntity.ok(invoiceService.createInvoice(data));
+    }
+
+    @GetMapping
+    public List<Invoice> getAllInvoices() {
+        return invoiceService.getAllInvoices();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Invoice> getInvoice(@PathVariable String id) {
+        Invoice invoice = invoiceService.getInvoiceById(id);
+        return invoice != null ? ResponseEntity.ok(invoice) : ResponseEntity.notFound().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Invoice> updateInvoice(@PathVariable String id, @RequestBody InvoiceDto data) {
+        Invoice updatedInvoice = invoiceService.updateInvoice(id, data);
+        return updatedInvoice != null ? ResponseEntity.ok(updatedInvoice) : ResponseEntity.notFound().build();
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteInvoice(@PathVariable String id) {
+        boolean deleted = invoiceService.deleteInvoice(id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+}
