@@ -86,17 +86,15 @@ public class InvoiceService {
         invoice.setItems(items);
         return invoice;
     }
-
-    // 🔹 Update (PUT)
     public Invoice updateInvoice(String id, InvoiceDto dto) {
         return invoiceRepository.findById(id).map(existingInvoice -> {
             Invoice updatedInvoice = toEntity(dto);
             updatedInvoice.setId(id); // preserve ID
 
-            // Save invoice
+
             Invoice savedInvoice = invoiceRepository.save(updatedInvoice);
 
-            // Replace items
+
             itemRepository.deleteAll(itemRepository.findByInvoiceId(id));
 
             if (dto.getItems() != null && !dto.getItems().isEmpty()) {
