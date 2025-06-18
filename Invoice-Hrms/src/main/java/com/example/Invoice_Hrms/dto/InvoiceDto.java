@@ -25,11 +25,14 @@ import lombok.Data;
         private String invoiceEmail;
         private String invoiceMobileNo;
         private String invoiceConsultantName;
+        private String invoiceCurrency;
+
 
         private String companyName;
         private String companyAddress;
         private String companyMobileNo;
         private String companyEmail;
+        private String ThanksNote;
 
         private List<itemDto> items;
     }

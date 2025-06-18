@@ -57,12 +57,14 @@ public class InvoiceService {
         invoice.setInvoiceMobileNo(dto.getInvoiceMobileNo());
         invoice.setCompanyMobileNo(dto.getCompanyMobileNo());
         invoice.setInvoiceConsultantName(dto.getInvoiceConsultantName());
+        invoice.setInvoiceCurrency(dto.getInvoiceCurrency());
         invoice.setCompanyName(dto.getCompanyName());
         invoice.setCompanyAddress(dto.getCompanyAddress());
         invoice.setCompanyMobileNo(dto.getCompanyMobileNo());
         invoice.setCompanyEmail(dto.getCompanyEmail());
         invoice.setInvoiceTerms(dto.getInvoiceTerms());
         invoice.setDueDate(dto.getDueDate());
+        invoice.setThanksNote(dto.getThanksNote());
         return invoice;
     }
 

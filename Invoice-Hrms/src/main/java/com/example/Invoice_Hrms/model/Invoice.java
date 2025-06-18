@@ -31,11 +31,13 @@ public class Invoice {
     private String invoiceEmail;
     private String invoiceMobileNo;
     private String invoiceConsultantName;
+    private String invoiceCurrency;
 
     private String companyName;
     private String companyAddress;
     private String companyMobileNo;
     private String companyEmail;
+    private String ThanksNote;
     @Transient
     private List<Item> items;
 }
