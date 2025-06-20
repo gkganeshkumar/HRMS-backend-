@@ -17,13 +17,20 @@ import org.springframework.stereotype.Service;
 public class InvoiceService {
 
 
-
+    public Invoice save(Invoice invoice) {
+        return invoiceRepository.save(invoice);
+    }
     private final InvoiceRepository invoiceRepository;
     private final ItemRepository itemRepository;
 
 
     public Invoice createInvoice(InvoiceDto dto) {
+
         Invoice invoice = toEntity(dto);
+        if (dto.getInvoiceStatus() == null || dto.getInvoiceStatus().trim().isEmpty()) {
+            invoice.setInvoiceStatus("New");
+        }
+
         Invoice savedInvoice = invoiceRepository.save(invoice);
 
         if (dto.getItems() != null && !dto.getItems().isEmpty()) {
@@ -58,6 +65,7 @@ public class InvoiceService {
         invoice.setCompanyMobileNo(dto.getCompanyMobileNo());
         invoice.setInvoiceConsultantName(dto.getInvoiceConsultantName());
         invoice.setInvoiceCurrency(dto.getInvoiceCurrency());
+        invoice.setInvoiceStatus(dto.getInvoiceStatus());
         invoice.setCompanyName(dto.getCompanyName());
         invoice.setCompanyAddress(dto.getCompanyAddress());
         invoice.setCompanyMobileNo(dto.getCompanyMobileNo());

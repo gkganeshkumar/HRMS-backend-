@@ -17,7 +17,7 @@ public class Company {
     private String contactName;
     private String companyAddress;
     private String companyCountry;
-    private int companyPinCode;
+    private String companyPinCode;
     private String companyEmail;
     private String companyMobileNo;
     private String logoUrl;

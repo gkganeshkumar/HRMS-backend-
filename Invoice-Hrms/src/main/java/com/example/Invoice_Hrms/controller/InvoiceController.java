@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/invoices")
 @RequiredArgsConstructor
 public class InvoiceController {
@@ -36,6 +38,19 @@ public class InvoiceController {
         Invoice updatedInvoice = invoiceService.updateInvoice(id, data);
         return updatedInvoice != null ? ResponseEntity.ok(updatedInvoice) : ResponseEntity.notFound().build();
     }
+
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Invoice> updateInvoiceStatus(@PathVariable String id, @RequestParam String status) {
+        Invoice invoice = invoiceService.getInvoiceById(id);
+        if (invoice == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        invoice.setInvoiceStatus(status);
+        return ResponseEntity.ok(invoiceService.save(invoice));
+    }
+
 
 
     @DeleteMapping("/{id}")

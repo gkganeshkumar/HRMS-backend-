@@ -26,6 +26,8 @@ import lombok.Data;
         private String invoiceMobileNo;
         private String invoiceConsultantName;
         private String invoiceCurrency;
+        private String InvoiceStatus;
+
 
 
         private String companyName;

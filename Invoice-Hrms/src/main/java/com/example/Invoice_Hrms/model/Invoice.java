@@ -32,6 +32,7 @@ public class Invoice {
     private String invoiceMobileNo;
     private String invoiceConsultantName;
     private String invoiceCurrency;
+    private String invoiceStatus;
 
     private String companyName;
     private String companyAddress;
