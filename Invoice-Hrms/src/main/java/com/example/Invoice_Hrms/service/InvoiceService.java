@@ -54,6 +54,7 @@ public class InvoiceService {
 
     private Invoice toEntity(InvoiceDto dto) {
         Invoice invoice = new Invoice();
+        invoice.setId(dto.getId());
         invoice.setInvoiceNo(dto.getInvoiceNo());
         invoice.setInvoiceDate(dto.getInvoiceDate());
         invoice.setInvoiceEmail(dto.getInvoiceEmail());

@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public class paymentDto {
 
 
-    @Id
     private String id;
     private  String invoiceNo;
     private  double paymentAmount;

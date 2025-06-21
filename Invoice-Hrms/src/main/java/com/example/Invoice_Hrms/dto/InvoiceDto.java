@@ -5,13 +5,15 @@ import java.util.List;
 
 import lombok.Data;
     import lombok.NonNull;
+    import org.springframework.data.annotation.Id;
 
 
 @Data
 
     public class InvoiceDto {
 
-
+    @Id
+         private  String Id;
         private String invoiceNo;
    private LocalDate invoiceDate;
 
