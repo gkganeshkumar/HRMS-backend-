@@ -11,6 +11,7 @@ public class paymentMapper {
     public payment toEntity(paymentDto dto){
 
          payment payment = new payment();
+         payment.setId(dto.getId());
          payment.setInvoiceNo(dto.getInvoiceNo());
          payment.setPaymentAmount(dto.getPaymentAmount());
          payment.setPaymentDate(dto.getPaymentDate());
@@ -22,6 +23,7 @@ public class paymentMapper {
 
     public  paymentDto toDto(payment payment){
         paymentDto dto  = new paymentDto();
+        dto.setId(payment.getId());
         dto.setInvoiceNo(payment.getInvoiceNo());
         dto.setPaymentAmount(payment.getPaymentAmount());
         dto.setPaymentDate(payment.getPaymentDate());
