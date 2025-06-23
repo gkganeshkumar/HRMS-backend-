@@ -4,6 +4,7 @@ package com.example.Invoice_Hrms.mapper;
 import java.math.BigDecimal;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -11,11 +12,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "item")
 
 public class Item {
-
+    @Id
+    private String Id;
     private String itemName;
     private BigDecimal qty;
     private BigDecimal rate;
     private BigDecimal amount;
+    private String invoiceId;
 
 
 

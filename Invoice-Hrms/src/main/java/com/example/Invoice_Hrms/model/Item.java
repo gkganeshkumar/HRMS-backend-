@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -13,7 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 public class Item {
 
-
+ @Id
+    private  String Id;
     private String itemName;
     private BigDecimal qty;
     private BigDecimal rate;

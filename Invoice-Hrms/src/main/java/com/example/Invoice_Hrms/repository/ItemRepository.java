@@ -11,5 +11,4 @@ public interface ItemRepository  extends MongoRepository<Item, String> {
          List<Item> findByInvoiceId(String invoiceId);
 
 
-;
 }

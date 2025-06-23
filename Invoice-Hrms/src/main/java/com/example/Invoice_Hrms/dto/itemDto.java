@@ -1,6 +1,7 @@
 package com.example.Invoice_Hrms.dto;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 
@@ -8,10 +9,12 @@ import java.math.BigDecimal;
 
 public class itemDto {
 
-
+  @Id
+    private  String Id;
     private String itemName;
     private BigDecimal qty;
     private BigDecimal rate;
     private BigDecimal amount;
+    private  String invoiceId;
 
 }

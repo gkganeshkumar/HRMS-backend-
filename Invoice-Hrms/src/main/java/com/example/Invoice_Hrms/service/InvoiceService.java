@@ -1,5 +1,6 @@
 package com.example.Invoice_Hrms.service;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.example.Invoice_Hrms.dto.InvoiceDto;
@@ -26,6 +27,10 @@ public class InvoiceService {
 
     public Invoice createInvoice(InvoiceDto dto) {
 
+
+        if (invoiceRepository.existsByInvoiceNo(dto.getInvoiceNo())) {
+            throw new IllegalArgumentException("Invoice number already exists: " + dto.getInvoiceNo());
+        }
         Invoice invoice = toEntity(dto);
         if (dto.getInvoiceStatus() == null || dto.getInvoiceStatus().trim().isEmpty()) {
             invoice.setInvoiceStatus("New");
@@ -37,6 +42,7 @@ public class InvoiceService {
             List<Item> items = dto.getItems().stream()
                     .map(i -> {
                         Item item = new Item();
+
                         item.setItemName(i.getItemName());
                         item.setQty(i.getQty());
                         item.setRate(i.getRate());
@@ -59,7 +65,7 @@ public class InvoiceService {
         invoice.setInvoiceDate(dto.getInvoiceDate());
         invoice.setInvoiceEmail(dto.getInvoiceEmail());
         invoice.setInvoiceCompanyName(dto.getInvoiceCompanyName());
-        invoice.setCompanyAddress(dto.getCompanyAddress());
+        invoice.setInvoiceCompanyAddress(dto.getInvoiceCompanyAddress());
         invoice.setInvoicePinCode(dto.getInvoicePinCode());
         invoice.setInvoiceCountry(dto.getInvoiceCountry());
         invoice.setInvoiceMobileNo(dto.getInvoiceMobileNo());
@@ -99,28 +105,51 @@ public class InvoiceService {
     }
     public Invoice updateInvoice(String id, InvoiceDto dto) {
         return invoiceRepository.findById(id).map(existingInvoice -> {
+            // Update invoice details
             Invoice updatedInvoice = toEntity(dto);
             updatedInvoice.setId(id); // preserve ID
-
-
             Invoice savedInvoice = invoiceRepository.save(updatedInvoice);
 
+            // Fetch current DB items
+            List<Item> existingItems = itemRepository.findByInvoiceId(id);
+            Map<String, Item> existingItemMap = existingItems.stream()
+                    .filter(i -> i.getId() != null)
+                    .collect(Collectors.toMap(Item::getId, i -> i));
 
-            itemRepository.deleteAll(itemRepository.findByInvoiceId(id));
+            // Track item IDs coming from frontend
+            List<Item> updatedItems = new java.util.ArrayList<>();
+            java.util.Set<String> incomingIds = new java.util.HashSet<>();
 
-            if (dto.getItems() != null && !dto.getItems().isEmpty()) {
-                List<Item> items = dto.getItems().stream()
-                        .map(i -> {
-                            Item item = new Item();
-                            item.setItemName(i.getItemName());
-                            item.setQty(i.getQty());
-                            item.setRate(i.getRate());
-                            item.setAmount(i.getAmount());
-                            item.setInvoiceId(id);
-                            return item;
-                        }).toList();
+            if (dto.getItems() != null) {
+                for (var i : dto.getItems()) {
+                    Item item = new Item();
+                    item.setItemName(i.getItemName());
+                    item.setQty(i.getQty());
+                    item.setRate(i.getRate());
+                    item.setAmount(i.getAmount());
+                    item.setInvoiceId(id);
 
-                itemRepository.saveAll(items);
+                    if (i.getId() != null && existingItemMap.containsKey(i.getId())) {
+                        // Existing item: update by reusing the ID
+                        item.setId(i.getId());
+                        incomingIds.add(i.getId());
+                    } else {
+                        // New item: let Mongo generate ID
+                        item.setId(null);
+                    }
+
+                    updatedItems.add(item);
+                }
+
+                // Save all (both updates & new)
+                itemRepository.saveAll(updatedItems);
+
+                // Delete items that were removed
+                List<Item> toDelete = existingItems.stream()
+                        .filter(i -> i.getId() != null && !incomingIds.contains(i.getId()))
+                        .toList();
+
+                itemRepository.deleteAll(toDelete);
             }
 
             return buildInvoiceItemData(savedInvoice);

@@ -18,6 +18,7 @@ public class InvoiceController {
 
     private final InvoiceService invoiceService;
 
+
     @PostMapping
     public ResponseEntity<Invoice> createInvoice(@RequestBody InvoiceDto data) {
         return ResponseEntity.ok(invoiceService.createInvoice(data));
@@ -33,6 +34,7 @@ public class InvoiceController {
         Invoice invoice = invoiceService.getInvoiceById(id);
         return invoice != null ? ResponseEntity.ok(invoice) : ResponseEntity.notFound().build();
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Invoice> updateInvoice(@PathVariable String id, @RequestBody InvoiceDto data) {
         Invoice updatedInvoice = invoiceService.updateInvoice(id, data);

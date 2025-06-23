@@ -7,17 +7,20 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
+
 
 
 @Document(collection = "invoices")
 @Data
 
-public class Invoice {
 
+public class Invoice {
     @Id
 
     private String id;
 
+    @Indexed(unique = true)
     private String invoiceNo;
 
     private LocalDate invoiceDate;

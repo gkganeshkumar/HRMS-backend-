@@ -8,7 +8,7 @@ public class CompanyMapper {
 
     public static Company toEntity(CompanyDto dto) {
         Company company = new Company();
-        dto.setId(company.getId());
+        company.setId(dto.getId());
         company.setCompanyName(dto.getCompanyName());
         company.setContactName(dto.getContactName());
         company.setCompanyAddress(dto.getCompanyAddress());
@@ -22,7 +22,7 @@ public class CompanyMapper {
 
     public static CompanyDto toDto(Company company) {
         CompanyDto dto = new CompanyDto();
-        dto.setId(company.getId());
+        company.setId(dto.getId());
         dto.setCompanyName(company.getCompanyName());
         dto.setContactName(company.getContactName());
         dto.setCompanyAddress(company.getCompanyAddress());
