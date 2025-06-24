@@ -60,4 +60,15 @@ public class InvoiceController {
         boolean deleted = invoiceService.deleteInvoice(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
+
+    @DeleteMapping("/items/{itemId}")
+    public ResponseEntity<String> deleteInvoiceItem(@PathVariable String itemId) {
+        boolean deleted = invoiceService.deleteItemById(itemId);
+        if (deleted) {
+            return ResponseEntity.ok("Item deleted successfully.");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

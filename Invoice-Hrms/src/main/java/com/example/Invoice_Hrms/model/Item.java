@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Item {
 
  @Id
-    private  String Id;
+    private  String id;
     private String itemName;
     private BigDecimal qty;
     private BigDecimal rate;

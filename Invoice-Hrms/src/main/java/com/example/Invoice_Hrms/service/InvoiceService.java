@@ -105,18 +105,18 @@ public class InvoiceService {
     }
     public Invoice updateInvoice(String id, InvoiceDto dto) {
         return invoiceRepository.findById(id).map(existingInvoice -> {
-            // Update invoice details
+
             Invoice updatedInvoice = toEntity(dto);
-            updatedInvoice.setId(id); // preserve ID
+            updatedInvoice.setId(id);
             Invoice savedInvoice = invoiceRepository.save(updatedInvoice);
 
-            // Fetch current DB items
             List<Item> existingItems = itemRepository.findByInvoiceId(id);
             Map<String, Item> existingItemMap = existingItems.stream()
                     .filter(i -> i.getId() != null)
                     .collect(Collectors.toMap(Item::getId, i -> i));
 
-            // Track item IDs coming from frontend
+
+
             List<Item> updatedItems = new java.util.ArrayList<>();
             java.util.Set<String> incomingIds = new java.util.HashSet<>();
 
@@ -130,21 +130,19 @@ public class InvoiceService {
                     item.setInvoiceId(id);
 
                     if (i.getId() != null && existingItemMap.containsKey(i.getId())) {
-                        // Existing item: update by reusing the ID
+
                         item.setId(i.getId());
                         incomingIds.add(i.getId());
                     } else {
-                        // New item: let Mongo generate ID
+
                         item.setId(null);
                     }
 
                     updatedItems.add(item);
                 }
-
-                // Save all (both updates & new)
                 itemRepository.saveAll(updatedItems);
 
-                // Delete items that were removed
+
                 List<Item> toDelete = existingItems.stream()
                         .filter(i -> i.getId() != null && !incomingIds.contains(i.getId()))
                         .toList();
@@ -164,6 +162,14 @@ public class InvoiceService {
         itemRepository.deleteAll(itemRepository.findByInvoiceId(id));
         return true;
     }
+    public boolean deleteItemById(String itemId) {
+        if (!itemRepository.existsById(itemId)) {
+            return false;
+        }
+        itemRepository.deleteById(itemId);
+        return true;
+    }
+
 
 
 

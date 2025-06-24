@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class itemDto {
 
   @Id
-    private  String Id;
+    private  String id;
     private String itemName;
     private BigDecimal qty;
     private BigDecimal rate;
