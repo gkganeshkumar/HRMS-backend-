@@ -17,6 +17,7 @@ public class Item {
  @Id
     private  String id;
     private String itemName;
+    private  String description;
     private BigDecimal qty;
     private BigDecimal rate;
     private BigDecimal amount;

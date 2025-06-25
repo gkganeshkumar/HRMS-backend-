@@ -40,6 +40,10 @@ public class InvoiceController {
         Invoice updatedInvoice = invoiceService.updateInvoice(id, data);
         return updatedInvoice != null ? ResponseEntity.ok(updatedInvoice) : ResponseEntity.notFound().build();
     }
+    @GetMapping("/{id}/with-amounts")
+    public ResponseEntity<InvoiceDto> getInvoiceWithAmounts(@PathVariable String id) {
+        return ResponseEntity.ok(invoiceService.getInvoiceWithAmounts(id));
+    }
 
 
     @PutMapping("/{id}/status")

@@ -15,6 +15,7 @@ public class Item {
     @Id
     private String id;
     private String itemName;
+    private String description;
     private BigDecimal qty;
     private BigDecimal rate;
     private BigDecimal amount;
@@ -22,8 +23,9 @@ public class Item {
 
 
 
-    public Item(String itemName, BigDecimal qty, BigDecimal rate, BigDecimal amount) {
+    public Item(String itemName,String description, BigDecimal qty, BigDecimal rate, BigDecimal amount) {
         this.itemName = itemName;
+        this.description= description;
         this.qty = qty;
         this.rate = rate;
         this.amount = amount;

@@ -1,13 +1,19 @@
 package com.example.Invoice_Hrms.service;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.example.Invoice_Hrms.dto.InvoiceDto;
+import com.example.Invoice_Hrms.dto.paymentDto;
+import com.example.Invoice_Hrms.mapper.InvoiceMapper;
+import com.example.Invoice_Hrms.mapper.paymentMapper;
 import com.example.Invoice_Hrms.model.Invoice;
 import com.example.Invoice_Hrms.model.Item;
+import com.example.Invoice_Hrms.model.payment;
 import com.example.Invoice_Hrms.repository.InvoiceRepository;
 import com.example.Invoice_Hrms.repository.ItemRepository;
+import com.example.Invoice_Hrms.repository.paymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +29,8 @@ public class InvoiceService {
     }
     private final InvoiceRepository invoiceRepository;
     private final ItemRepository itemRepository;
-
+    private  final paymentMapper paymentMapper;
+    private final paymentRepository paymentRepository;
 
     public Invoice createInvoice(InvoiceDto dto) {
 
@@ -44,6 +51,7 @@ public class InvoiceService {
                         Item item = new Item();
 
                         item.setItemName(i.getItemName());
+                        item.setDescription(i.getDescription());
                         item.setQty(i.getQty());
                         item.setRate(i.getRate());
                         item.setAmount(i.getAmount());
@@ -124,6 +132,7 @@ public class InvoiceService {
                 for (var i : dto.getItems()) {
                     Item item = new Item();
                     item.setItemName(i.getItemName());
+                    item.setDescription(i.getDescription());
                     item.setQty(i.getQty());
                     item.setRate(i.getRate());
                     item.setAmount(i.getAmount());
@@ -162,6 +171,35 @@ public class InvoiceService {
         itemRepository.deleteAll(itemRepository.findByInvoiceId(id));
         return true;
     }
+    public InvoiceDto getInvoiceWithAmounts(String invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow();
+
+        List<Item> items = itemRepository.findByInvoiceId(invoiceId);
+        BigDecimal totalAmount = items.stream()
+                .map(Item::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        List<payment> payments = paymentRepository.findByInvoiceNo(invoice.getInvoiceNo());
+        BigDecimal paidAmount = payments.stream()
+                .map(p -> BigDecimal.valueOf(p.getPaymentAmount()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal pendingAmount = totalAmount.subtract(paidAmount);
+
+        InvoiceDto dto = InvoiceMapper.toDto(invoice);
+        dto.setTotalAmount(totalAmount);
+        dto.setPaidAmount(paidAmount);
+        dto.setPendingAmount(pendingAmount);
+
+        List<paymentDto> paymentDtos = payments.stream()
+                .map(paymentMapper::toDto)
+                .toList();
+
+        dto.setPayments(paymentDtos);
+
+        return dto;
+    }
+
     public boolean deleteItemById(String itemId) {
         if (!itemRepository.existsById(itemId)) {
             return false;

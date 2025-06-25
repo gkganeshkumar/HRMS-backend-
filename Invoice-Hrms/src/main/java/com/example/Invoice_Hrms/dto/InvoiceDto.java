@@ -1,5 +1,6 @@
 package com.example.Invoice_Hrms.dto;
 
+    import java.math.BigDecimal;
     import java.time.LocalDate;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import lombok.Data;
     public class InvoiceDto {
 
     @Id
-         private  String Id;
+         private  String id;
         private String invoiceNo;
    private LocalDate invoiceDate;
 
@@ -30,7 +31,9 @@ import lombok.Data;
         private String invoiceCurrency;
         private String InvoiceStatus;
 
-
+        private BigDecimal totalAmount;
+        private BigDecimal paidAmount;
+        private BigDecimal pendingAmount;
 
         private String companyName;
         private String companyAddress;
@@ -39,6 +42,8 @@ import lombok.Data;
         private String ThanksNote;
 
         private List<itemDto> items;
+
+    private List<paymentDto> payments;
     }
 
 
