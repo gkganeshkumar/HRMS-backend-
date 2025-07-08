@@ -46,6 +46,7 @@ public class InvoiceController {
     }
 
 
+
     @PutMapping("/{id}/status")
     public ResponseEntity<Invoice> updateInvoiceStatus(@PathVariable String id, @RequestParam String status) {
         Invoice invoice = invoiceService.getInvoiceById(id);

@@ -42,6 +42,8 @@ public class Invoice {
     private String companyMobileNo;
     private String companyEmail;
     private String ThanksNote;
+
+    private Double invoiceTotalAmount;
     @Transient
     private List<Item> items;
 }
